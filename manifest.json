@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Netkeiba Replay Embedder",
-  "version": "1.0.0.1",
+  "version": "1.0.0",
   "description": "Embeds JRA replays on Netkeiba.",
   "icons": {"16": "icon.png", "48": "icon.png", "128": "icon.png"},
   "content_scripts": [
