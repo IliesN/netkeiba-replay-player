@@ -1,0 +1,7 @@
+*.zip
+*.rar
+*.tar.gz
+
+Thumbs.db
+
+.vscode/

@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Netkeiba Replay Embedder",
+  "version": "1.0",
+  "description": "Embeds JRA replays on Netkeiba.",
+  "icons": {"16": "icon.png", "48": "icon.png", "128": "icon.png"},
+  "content_scripts": [
+    {
+      "matches": ["https://*.netkeiba.com/db/race/*"],
+      "js": ["content.js"]
+    },
+    {
+      "matches": ["https://jra.jp/*"],
+      "js": ["jra_player.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://*.stream.ne.jp/*"],
+      "js": ["iframe_monitor.js"],
+      "all_frames": true
+    }
+  ]
+}
