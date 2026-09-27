@@ -5,7 +5,7 @@
   "description": "Embeds JRA replays directly on Netkeiba.",
   "browser_specific_settings": {
     "gecko": {
-      "id": "dontforget@deltarune.com",
+      "id": "netkeiba-replay-player@gmail.com",
       "data_collection_permissions": {
         "required": [
           "none"
