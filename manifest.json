@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Netkeiba Replay Embedder",
-  "version": "1.0.0.2",
-  "description": "Embeds JRA replays on Netkeiba.",
+  "name": "Netkeiba Replay Player",
+  "version": "1.0.0.3",
+  "description": "Embeds JRA replays directly on Netkeiba.",
   "browser_specific_settings": {
     "gecko": {
       "id": "dontforget@deltarune.com",
