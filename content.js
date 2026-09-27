@@ -50,13 +50,14 @@ if (videoContainer) {
         videoContainer.innerHTML = '';
         
         if (era === 1) {
-            // --- ERA 1: Pre-Dec 8, 2012 (YouTube) ---
             const raceNameElement = document.querySelector('.RaceName_main');
             const raceName = raceNameElement ? raceNameElement.innerText.trim() : "";
             const searchQuery = encodeURIComponent(`${yearStr} ${raceName} JRA`);
             const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${searchQuery}`;
             
             videoContainer.style.position = 'relative';
+            videoContainer.style.width = '100%';
+            videoContainer.style.aspectRatio = '16 / 9'; // Forces the correct video dimensions
             videoContainer.style.backgroundImage = thumbUrl ? `url(${thumbUrl})` : 'none';
             videoContainer.style.backgroundSize = 'cover';
             videoContainer.style.backgroundPosition = 'center';
