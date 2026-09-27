@@ -29,4 +29,5 @@ The extension is now installed and will automatically activate on Netkeiba race 
 
 This extension only works on the **English version of Netkeiba**.  
 While every graded race should be available to watch with this extension either directly within a pop-up widonw or by being redirected to YouTube, you might stumble upon a few races that greet you with an error message. **This is because `jra.jp` did not begin comprehensively archiving weekend race replays until March 28, 2015.** This issue is currently being worked on.  
+
 This extension is an independent, open-source project and is **not** affiliated with, endorsed by, or sponsored by the Japan Racing Association (JRA) or Netkeiba. All trademarks and copyrights belong to their respective owners.
