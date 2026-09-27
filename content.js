@@ -1,25 +1,57 @@
 const videoContainer = document.querySelector('.VideoSampleThum');
 
 if (videoContainer) {
-    // Extract ID from URL
     const urlMatch = window.location.pathname.match(/\/db\/race\/(\d{12})/);
     
     if (urlMatch && urlMatch[1]) {
         const nkId = urlMatch[1];
-        const year = parseInt(nkId.substring(0, 4));
         
-        // Grab the existing thumbnail image URL before we clear the container
+        // ID Parsing
+        const yearStr = nkId.substring(0, 4);
+        const course = nkId.substring(4, 6);
+        const meeting = nkId.substring(6, 8);
+        const day = nkId.substring(8, 10);
+        const raceNum = nkId.substring(10, 12);
+        const jraId = `${yearStr}${meeting}${course}${day}${raceNum}`;
+
+        // Date Extraction from Meta Description (e.g., "04 DEC 2011")
+        const metaDesc = document.querySelector('meta[name="description"]');
+        let raceDate = null;
+        let mmdd = "";
+
+        if (metaDesc) {
+            const dateMatch = metaDesc.content.match(/^(\d{2})\s([A-Z]{3})\s(\d{4})/i);
+            if (dateMatch) {
+                const d = dateMatch[1];
+                const monthStr = dateMatch[2].toUpperCase();
+                const y = dateMatch[3];
+                const months = {JAN:'01', FEB:'02', MAR:'03', APR:'04', MAY:'05', JUN:'06', JUL:'07', AUG:'08', SEP:'09', OCT:'10', NOV:'11', DEC:'12'};
+                mmdd = `${months[monthStr]}${d}`;
+                raceDate = new Date(`${y}-${months[monthStr]}-${d}`);
+            }
+        }
+
+        // Determine Era Based on Cutoffs
+        const era1Cutoff = new Date('2012-12-08');
+        const era2Cutoff = new Date('2017-12-03'); // Dec 2 is the last day of era 2
+        
+        let era = 3; // Default to modern player
+        if (raceDate && raceDate < era1Cutoff) {
+            era = 1; // YouTube Fallback
+        } else if (raceDate && raceDate >= era1Cutoff && raceDate < era2Cutoff) {
+            era = 2; // Mid-Era subwindow.html
+        }
+
+        // UI Setup
         const existingImg = videoContainer.querySelector('img');
         const thumbUrl = existingImg ? existingImg.src : '';
-        
         videoContainer.innerHTML = '';
         
-        if (year <= 2012) {
-            // --- Pre-2013 replay YouTube redirection ---
+        if (era === 1) {
+            // --- ERA 1: Pre-Dec 8, 2012 (YouTube) ---
             const raceNameElement = document.querySelector('.RaceName_main');
             const raceName = raceNameElement ? raceNameElement.innerText.trim() : "";
-            
-            const searchQuery = encodeURIComponent(`${year} ${raceName} JRA`);
+            const searchQuery = encodeURIComponent(`${yearStr} ${raceName} JRA`);
             const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${searchQuery}`;
             
             videoContainer.style.position = 'relative';
@@ -39,19 +71,8 @@ if (videoContainer) {
                 </div>
             `;
         } else {
-            // ID Conversion
-            const yearStr = nkId.substring(0, 4);     // YYYY
-            const course = nkId.substring(4, 6);      // CC
-            const meeting = nkId.substring(6, 8);     // KK
-            const day = nkId.substring(8, 10);        // DD
-            const raceNum = nkId.substring(10, 12);   // NN
-            
-
-            const jraId = `${yearStr}${meeting}${course}${day}${raceNum}`;
-            
-            // Player creation
+            // --- ERAS 2 & 3: JRA Player (Mid-Era or Modern) ---
             const fakePlayer = document.createElement('div');
-
             fakePlayer.style.width = "100%";
             fakePlayer.style.aspectRatio = "16 / 9";
             fakePlayer.style.backgroundImage = thumbUrl ? `url(${thumbUrl})` : 'none';
@@ -66,9 +87,8 @@ if (videoContainer) {
             fakePlayer.style.overflow = "hidden";
             fakePlayer.style.border = "1px solid #333";
             fakePlayer.style.boxShadow = "inset 0 0 50px rgba(0,0,0,0.8)";
-
+            
             const overlay = document.createElement('div');
-
             overlay.style.position = 'absolute';
             overlay.style.top = '0';
             overlay.style.left = '0';
@@ -77,9 +97,8 @@ if (videoContainer) {
             overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
             overlay.style.backdropFilter = 'blur(4px)';
             overlay.style.zIndex = '1';
-
+            
             const contentWrapper = document.createElement('div');
-
             contentWrapper.style.position = 'relative';
             contentWrapper.style.zIndex = '2';
             contentWrapper.style.display = 'flex';
@@ -87,7 +106,6 @@ if (videoContainer) {
             contentWrapper.style.alignItems = 'center';
 
             const title = document.createElement('div');
-
             title.innerText = "Launch JRA Video";
             title.style.color = "#fff";
             title.style.fontWeight = "bold";
@@ -96,12 +114,15 @@ if (videoContainer) {
             title.style.textShadow = "1px 1px 3px rgba(0,0,0,0.8)";
             
             function openJraPopup() {
-                const url = `https://jra.jp/?jra_video=${jraId}`;
+                // Pass era, year, and mmdd to the popup to construct the correct URL
+                let url = `https://jra.jp/?jra_video=${jraId}&era=${era}`;
+                if (era === 2) {
+                    url += `&mmdd=${mmdd}&year=${yearStr}`;
+                }
                 window.open(url, "JRAPlayer", "width=854,height=480,backgroundColor=#000");
             }
             
             const btnPlay = document.createElement('button');
-            
             btnPlay.innerText = "▶ Play Replay";
             btnPlay.onclick = openJraPopup;
             btnPlay.style.padding = "10px 20px";
