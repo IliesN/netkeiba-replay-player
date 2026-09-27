@@ -11,7 +11,7 @@
           "none"
         ]
       },
-      "strict_min_version": "42.0"
+      "strict_min_version": "58.0"
     }
   }, 
   "icons": {"16": "icon.png", "48": "icon.png", "128": "icon.png"},
