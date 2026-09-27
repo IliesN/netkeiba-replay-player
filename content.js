@@ -31,15 +31,18 @@ if (videoContainer) {
             }
         }
 
-        // Determine Era Based on Cutoffs
+        // Determine Era Based on Precise Cutoffs
         const era1Cutoff = new Date('2012-12-08');
-        const era2Cutoff = new Date('2017-12-03'); // Dec 2 is the last day of era 2
+        const era2Cutoff = new Date('2017-12-03'); 
+        const era3Cutoff = new Date('2022-09-10'); 
         
-        let era = 3; // Default to modern player
+        let era = 4; // Default to modern V2 player
         if (raceDate && raceDate < era1Cutoff) {
             era = 1; // YouTube Fallback
-        } else if (raceDate && raceDate >= era1Cutoff && raceDate < era2Cutoff) {
+        } else if (raceDate && raceDate < era2Cutoff) {
             era = 2; // Mid-Era subwindow.html
+        } else if (raceDate && raceDate < era3Cutoff) {
+            era = 3; // Modern V1 (eqPcPlayer.html)
         }
 
         // UI Setup
@@ -63,15 +66,14 @@ if (videoContainer) {
 
             videoContainer.innerHTML = `
                 <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1;"></div>
-                <div style="position: relative; z-index: 2; width: 100%; aspect-ratio: 16/9; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                    <div style="color: #fff; font-weight: bold; margin-bottom: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">Archive not available on JRA Web</div>
+                <div style="position: relative; z-index: 2; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
                     <button onclick="window.open('${youtubeSearchUrl}', '_blank')" style="padding: 10px 20px; background-color: #f00; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
                         🔍 Search on YouTube
                     </button>
                 </div>
             `;
         } else {
-            // --- ERAS 2 & 3: JRA Player (Mid-Era or Modern) ---
+            // --- ERAS 2, 3 & 4: JRA Players ---
             const fakePlayer = document.createElement('div');
             fakePlayer.style.width = "100%";
             fakePlayer.style.aspectRatio = "16 / 9";
@@ -101,20 +103,13 @@ if (videoContainer) {
             const contentWrapper = document.createElement('div');
             contentWrapper.style.position = 'relative';
             contentWrapper.style.zIndex = '2';
+            contentWrapper.style.width = '100%';
+            contentWrapper.style.height = '100%';
             contentWrapper.style.display = 'flex';
-            contentWrapper.style.flexDirection = 'column';
             contentWrapper.style.alignItems = 'center';
+            contentWrapper.style.justifyContent = 'center';
 
-            const title = document.createElement('div');
-            title.innerText = "Launch JRA Video";
-            title.style.color = "#fff";
-            title.style.fontWeight = "bold";
-            title.style.fontFamily = "sans-serif";
-            title.style.marginBottom = "20px";
-            title.style.textShadow = "1px 1px 3px rgba(0,0,0,0.8)";
-            
             function openJraPopup() {
-                // Pass era, year, and mmdd to the popup to construct the correct URL
                 let url = `https://jra.jp/?jra_video=${jraId}&era=${era}`;
                 if (era === 2) {
                     url += `&mmdd=${mmdd}&year=${yearStr}`;
@@ -138,7 +133,6 @@ if (videoContainer) {
             btnPlay.onmouseover = () => btnPlay.style.backgroundColor = "#1e527a";
             btnPlay.onmouseout = () => btnPlay.style.backgroundColor = "#2b72a5";
             
-            contentWrapper.appendChild(title);
             contentWrapper.appendChild(btnPlay);
             
             fakePlayer.appendChild(overlay);
