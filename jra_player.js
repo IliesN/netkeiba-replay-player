@@ -35,7 +35,6 @@ if (videoId) {
         `;
     };
 
-    // Safety net: Only trigger a reload if we started with V2 and caught an error
     window.addEventListener('message', (event) => {
         if (event.data === 'JRA_P1001_ERROR' && isV2) {
             console.log("P1001 Error detected: Switching to V1 player fallback!");

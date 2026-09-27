@@ -31,18 +31,17 @@ if (videoContainer) {
             }
         }
 
-        // Determine Era Based on Precise Cutoffs
         const era1Cutoff = new Date('2012-12-08');
         const era2Cutoff = new Date('2017-12-03'); 
         const era3Cutoff = new Date('2022-09-10'); 
         
-        let era = 4; // Default to modern V2 player
+        let era = 4; 
         if (raceDate && raceDate < era1Cutoff) {
-            era = 1; // YouTube Fallback
+            era = 1; 
         } else if (raceDate && raceDate < era2Cutoff) {
-            era = 2; // Mid-Era subwindow.html
+            era = 2; 
         } else if (raceDate && raceDate < era3Cutoff) {
-            era = 3; // Modern V1 (eqPcPlayer.html)
+            era = 3; 
         }
 
         // UI Setup
@@ -115,17 +114,14 @@ if (videoContainer) {
                     url += `&mmdd=${mmdd}&year=${yearStr}`;
                 }
                 
-                // 1. Get the exact dimensions and position of our fake player relative to the viewport
                 const rect = fakePlayer.getBoundingClientRect();
                 const width = Math.round(rect.width);
                 const height = Math.round(rect.height);
                 
-                // 2. Translate viewport coordinates to physical screen coordinates
-                // We add the browser's UI height (outerHeight - innerHeight) to get an accurate Y position
+
                 const left = Math.round(window.screenX + rect.left);
                 const top = Math.round(window.screenY + (window.outerHeight - window.innerHeight) + rect.top);
 
-                // 3. Apply these to the window.open features
                 const windowFeatures = `width=${width},height=${height},left=${left},top=${top},backgroundColor=#000`;
                 
                 window.open(url, "JRAPlayer", windowFeatures);
