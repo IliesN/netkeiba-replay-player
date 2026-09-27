@@ -1,8 +1,14 @@
 {
   "manifest_version": 3,
   "name": "Netkeiba Replay Embedder",
-  "version": "1.0.0.1",
+  "version": "1.0.0.2",
   "description": "Embeds JRA replays on Netkeiba.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "dontforget@deltarune.com",
+      "strict_min_version": "42.0"
+    }
+  }, 
   "icons": {"16": "icon.png", "48": "icon.png", "128": "icon.png"},
   "content_scripts": [
     {
