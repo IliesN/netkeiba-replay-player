@@ -14,7 +14,7 @@ if (videoContainer) {
         const raceNum = nkId.substring(10, 12);
         const jraId = `${yearStr}${meeting}${course}${day}${raceNum}`;
 
-        // Date Extraction from Meta Description (e.g., "04 DEC 2011")
+        // Date Extraction from Meta Description
         const metaDesc = document.querySelector('meta[name="description"]');
         let raceDate = null;
         let mmdd = "";
@@ -114,7 +114,21 @@ if (videoContainer) {
                 if (era === 2) {
                     url += `&mmdd=${mmdd}&year=${yearStr}`;
                 }
-                window.open(url, "JRAPlayer", "width=854,height=480,backgroundColor=#000");
+                
+                // 1. Get the exact dimensions and position of our fake player relative to the viewport
+                const rect = fakePlayer.getBoundingClientRect();
+                const width = Math.round(rect.width);
+                const height = Math.round(rect.height);
+                
+                // 2. Translate viewport coordinates to physical screen coordinates
+                // We add the browser's UI height (outerHeight - innerHeight) to get an accurate Y position
+                const left = Math.round(window.screenX + rect.left);
+                const top = Math.round(window.screenY + (window.outerHeight - window.innerHeight) + rect.top);
+
+                // 3. Apply these to the window.open features
+                const windowFeatures = `width=${width},height=${height},left=${left},top=${top},backgroundColor=#000`;
+                
+                window.open(url, "JRAPlayer", windowFeatures);
             }
             
             const btnPlay = document.createElement('button');
