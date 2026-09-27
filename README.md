@@ -14,6 +14,8 @@ If the replay of any given race isn't hosted on `jra.jp`, the extension will ins
 
 ## How to Install from GitHub
 
+### Chrome
+
 This extension is pending Web Store approval, so in the meantime, you can load it directly into Chrome:
 
 1. Download the `.zip` file from the Releases section.
@@ -22,6 +24,17 @@ This extension is pending Web Store approval, so in the meantime, you can load i
 4. Turn on **Developer mode** using the toggle switch in the top right corner.
 5. Click the **Load unpacked** button in the top left.
 6. Select the folder you extracted in Step 2.
+
+### Mozilla Firefox
+
+This extension is pending Add-on Store approval, so in the meantime, you can load it directly into Firefox:
+
+1. Download and extract the `netkeiba-replay-player.zip` file to a folder on your computer.
+2. Open Firefox and type `about:debugging` in the address bar, then press **Enter**.
+3. Select **This Firefox** from the left-hand sidebar.
+4. Click the **Load Temporary Add-on...** button.
+5. Navigate into your extracted `netkeiba-replay-player` folder and select the `manifest.json` file.  
+
 
 The extension is now installed and will automatically activate on Netkeiba race result pages (hopefully!)
 
