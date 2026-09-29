@@ -1,155 +1,93 @@
-const videoContainer = document.querySelector('.VideoSampleThum');
+// Plays JRA replays inline on Netkeiba race pages.
+// JRA's player only runs on jra.jp, but its HLS streams are public: we fetch and play them directly.
+(() => {
+    const container = document.querySelector('.VideoSampleThum');
+    const idMatch = location.pathname.match(/\/db\/race\/(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)/);
+    if (!container || !idMatch) return;
 
-if (videoContainer) {
-    const urlMatch = window.location.pathname.match(/\/db\/race\/(\d{12})/);
-    
-    if (urlMatch && urlMatch[1]) {
-        const nkId = urlMatch[1];
-        
-        // ID Parsing
-        const yearStr = nkId.substring(0, 4);
-        const course = nkId.substring(4, 6);
-        const meeting = nkId.substring(6, 8);
-        const day = nkId.substring(8, 10);
-        const raceNum = nkId.substring(10, 12);
-        const jraId = `${yearStr}${meeting}${course}${day}${raceNum}`;
+    // Netkeiba ID: year+course+meeting+day+race; JRA swaps course and meeting
+    const [, year, course, meeting, day, race] = idMatch;
+    const jraId = year + meeting + course + day + race;
 
-        // Date Extraction from Meta Description
-        const metaDesc = document.querySelector('meta[name="description"]');
-        let raceDate = null;
-        let mmdd = "";
+    // Race date from the meta description ("27 SEP 2026 ..."), for the legacy archive
+    const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    const [, dd, mon] = document.querySelector('meta[name="description"]')?.content.match(/^(\d{2})\s([A-Z]{3})\s\d{4}/i) || [];
+    const month = MONTHS.indexOf(mon?.toUpperCase()) + 1;
+    const mmdd = month ? String(month).padStart(2, '0') + dd : '';
 
-        if (metaDesc) {
-            const dateMatch = metaDesc.content.match(/^(\d{2})\s([A-Z]{3})\s(\d{4})/i);
-            if (dateMatch) {
-                const d = dateMatch[1];
-                const monthStr = dateMatch[2].toUpperCase();
-                const y = dateMatch[3];
-                const months = {JAN:'01', FEB:'02', MAR:'03', APR:'04', MAY:'05', JUN:'06', JUL:'07', AUG:'08', SEP:'09', OCT:'10', NOV:'11', DEC:'12'};
-                mmdd = `${months[monthStr]}${d}`;
-                raceDate = new Date(`${y}-${months[monthStr]}-${d}`);
-            }
-        }
+    // --- Replay lookup: probe all archives at once; first hit (best quality) wins ---
+    const eqBase = (id) => `https://${id}.eq.webcdn.stream.ne.jp/www50/${id}/jmc_pub/`;
+    const findEq = async (id) => {
+        const res = await fetch(`${eqBase(id)}eq_meta/v1_o/${jraId}.jsonp`);
+        if (!res.ok) return null;
+        const text = await res.text(); // JSONP: parse the JSON, never eval it
+        const movie = JSON.parse(text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1)).movie;
+        const streams = (movie?.enable !== '0' && movie?.movie_list_hls) || []; // as in JRA's player
+        const stream = streams.find((s) => s.text === 'auto') || streams[0];
+        return stream && eqBase(id) + stream.url;
+    };
+    const findLegacy = async () => { // pre-2018 archive, keyed by date
+        const url = `https://jra-fms.hls.wseod.stream.ne.jp/www11/jra-fms/_definst_/mp4:pc_seiseki/${year}/${mmdd}/${jraId}/playlist.m3u8`;
+        return mmdd && (await fetch(url)).ok ? url : null;
+    };
+    const lookups = [findEq('eqc834rezx'), findEq('eqd109zrse'), findLegacy()]; // eqPcPlayer2, eqPcPlayer, subwindow
+    const replayUrl = Promise.all(lookups.map((p) => p.catch(() => null))).then((urls) => urls.find(Boolean));
 
-        const era1Cutoff = new Date('2012-12-08');
-        const era2Cutoff = new Date('2017-12-03'); 
-        const era3Cutoff = new Date('2022-09-10'); 
-        
-        let era = 4; 
-        if (raceDate && raceDate < era1Cutoff) {
-            era = 1; 
-        } else if (raceDate && raceDate < era2Cutoff) {
-            era = 2; 
-        } else if (raceDate && raceDate < era3Cutoff) {
-            era = 3; 
-        }
+    // --- UI ---
+    const make = (tag, css) => { const el = document.createElement(tag); el.style.cssText = css; return el; };
+    const thumb = container.querySelector('img')?.src || '';
+    const player = make('div', 'position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:8px;border:1px solid #333;background:#000 center/cover');
+    if (thumb) player.style.backgroundImage = `url("${thumb}")`;
+    const overlay = make('div', 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(0,0,0,.5);backdrop-filter:blur(4px)');
+    const button = make('button', 'padding:10px 20px;color:#fff;border:none;border-radius:5px;font-weight:bold;font-size:14px;transition:filter .2s;box-shadow:0 4px 6px rgba(0,0,0,.3)');
+    const caption = make('div', 'color:#eee;font-size:12px;text-shadow:0 1px 2px #000');
+    button.onmouseenter = () => { if (!button.disabled) button.style.filter = 'brightness(.8)'; };
+    button.onmouseleave = () => { button.style.filter = ''; };
+    overlay.append(button, caption);
+    player.append(overlay);
+    container.replaceChildren(player);
 
-        // UI Setup
-        const existingImg = videoContainer.querySelector('img');
-        const thumbUrl = existingImg ? existingImg.src : '';
-        videoContainer.innerHTML = '';
-        
-        if (era === 1) {
-            const raceNameElement = document.querySelector('.RaceName_main');
-            const raceName = raceNameElement ? raceNameElement.innerText.trim() : "";
-            const searchQuery = encodeURIComponent(`${yearStr} ${raceName} JRA`);
-            const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${searchQuery}`;
-            
-            videoContainer.style.position = 'relative';
-            videoContainer.style.width = '100%';
-            videoContainer.style.aspectRatio = '16 / 9'; // Forces the correct video dimensions
-            videoContainer.style.backgroundImage = thumbUrl ? `url(${thumbUrl})` : 'none';
-            videoContainer.style.backgroundSize = 'cover';
-            videoContainer.style.backgroundPosition = 'center';
-            videoContainer.style.borderRadius = '8px';
-            videoContainer.style.overflow = 'hidden';
+    const setButton = (label, color, onclick = null) => {
+        Object.assign(button, { textContent: label, onclick, disabled: !onclick });
+        Object.assign(button.style, { background: color, cursor: onclick ? 'pointer' : 'default' });
+    };
 
-            videoContainer.innerHTML = `
-                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1;"></div>
-                <div style="position: relative; z-index: 2; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                    <button onclick="window.open('${youtubeSearchUrl}', '_blank')" style="padding: 10px 20px; background-color: #f00; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-                        🔍 Search on YouTube
-                    </button>
-                </div>
-            `;
-        } else {
-            // --- ERAS 2, 3 & 4: JRA Players ---
-            const fakePlayer = document.createElement('div');
-            fakePlayer.style.width = "100%";
-            fakePlayer.style.aspectRatio = "16 / 9";
-            fakePlayer.style.backgroundImage = thumbUrl ? `url(${thumbUrl})` : 'none';
-            fakePlayer.style.backgroundSize = "cover";
-            fakePlayer.style.backgroundPosition = "center";
-            fakePlayer.style.position = "relative";
-            fakePlayer.style.display = "flex";
-            fakePlayer.style.flexDirection = "column";
-            fakePlayer.style.alignItems = "center";
-            fakePlayer.style.justifyContent = "center";
-            fakePlayer.style.borderRadius = "8px";
-            fakePlayer.style.overflow = "hidden";
-            fakePlayer.style.border = "1px solid #333";
-            fakePlayer.style.boxShadow = "inset 0 0 50px rgba(0,0,0,0.8)";
-            
-            const overlay = document.createElement('div');
-            overlay.style.position = 'absolute';
-            overlay.style.top = '0';
-            overlay.style.left = '0';
-            overlay.style.width = '100%';
-            overlay.style.height = '100%';
-            overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-            overlay.style.backdropFilter = 'blur(4px)';
-            overlay.style.zIndex = '1';
-            
-            const contentWrapper = document.createElement('div');
-            contentWrapper.style.position = 'relative';
-            contentWrapper.style.zIndex = '2';
-            contentWrapper.style.width = '100%';
-            contentWrapper.style.height = '100%';
-            contentWrapper.style.display = 'flex';
-            contentWrapper.style.alignItems = 'center';
-            contentWrapper.style.justifyContent = 'center';
+    const showYoutube = (message) => {
+        const name = document.querySelector('.RaceName_main')?.innerText.trim() || '';
+        const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${year} ${name} JRA`)}`;
+        setButton('🔍 Search on YouTube', '#f00', () => window.open(url, '_blank', 'noopener'));
+        caption.textContent = message;
+        player.replaceChildren(overlay);
+    };
 
-            function openJraPopup() {
-                let url = `https://jra.jp/?jra_video=${jraId}&era=${era}`;
-                if (era === 2) {
-                    url += `&mmdd=${mmdd}&year=${yearStr}`;
+    const playInline = (url) => {
+        const video = make('video', 'position:absolute;inset:0;width:100%;height:100%;background:#000');
+        Object.assign(video, { controls: true, playsInline: true, poster: thumb });
+        player.replaceChildren(video);
+        const { Hls } = globalThis;
+        if (Hls?.isSupported()) {
+            // hls.js: Firefox has no native HLS. High bandwidth estimate = start at top quality
+            const hls = new Hls({ enableWorker: false, abrEwmaDefaultEstimate: 5e6 });
+            let recovered = false;
+            hls.on(Hls.Events.ERROR, (_, { fatal, type }) => {
+                if (!fatal) return;
+                if (type === Hls.ErrorTypes.MEDIA_ERROR && !recovered) {
+                    recovered = true;
+                    return hls.recoverMediaError();
                 }
-                
-                const rect = fakePlayer.getBoundingClientRect();
-                const width = Math.round(rect.width);
-                const height = Math.round(rect.height);
-                
-
-                const left = Math.round(window.screenX + rect.left);
-                const top = Math.round(window.screenY + (window.outerHeight - window.innerHeight) + rect.top);
-
-                const windowFeatures = `width=${width},height=${height},left=${left},top=${top},backgroundColor=#000`;
-                
-                window.open(url, "JRAPlayer", windowFeatures);
-            }
-            
-            const btnPlay = document.createElement('button');
-            btnPlay.innerText = "▶ Play Replay";
-            btnPlay.onclick = openJraPopup;
-            btnPlay.style.padding = "10px 20px";
-            btnPlay.style.cursor = "pointer";
-            btnPlay.style.backgroundColor = "#2b72a5";
-            btnPlay.style.color = "white";
-            btnPlay.style.border = "none";
-            btnPlay.style.borderRadius = "5px";
-            btnPlay.style.fontWeight = "bold";
-            btnPlay.style.transition = "background-color 0.2s";
-            btnPlay.style.boxShadow = "0 4px 6px rgba(0,0,0,0.3)";
-            
-            btnPlay.onmouseover = () => btnPlay.style.backgroundColor = "#1e527a";
-            btnPlay.onmouseout = () => btnPlay.style.backgroundColor = "#2b72a5";
-            
-            contentWrapper.appendChild(btnPlay);
-            
-            fakePlayer.appendChild(overlay);
-            fakePlayer.appendChild(contentWrapper);
-            
-            videoContainer.appendChild(fakePlayer);
+                hls.destroy();
+                showYoutube('The JRA replay failed to load.');
+            });
+            hls.loadSource(url);
+            hls.attachMedia(video);
+        } else {
+            video.src = url; // native HLS
         }
-    }
-}
+        video.play().catch(() => {}); // autoplay may be blocked; controls remain
+    };
+
+    setButton('Looking for the replay…', '#555');
+    replayUrl.then((url) => (url
+        ? setButton('▶ Play Replay', '#2b72a5', () => playInline(url))
+        : showYoutube('No JRA replay was found for this race.')));
+})();

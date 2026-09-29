@@ -1,34 +1,18 @@
 {
   "manifest_version": 3,
-  "name": "Netkeiba Replay Player",
-  "version": "1.0.0.3",
+  "name": "Replay Player for Netkeiba",
+  "version": "1.1.0",
   "description": "Embeds JRA replays directly on Netkeiba.",
   "browser_specific_settings": {
     "gecko": {
       "id": "netkeiba-replay-player@gmail.com",
-      "data_collection_permissions": {
-        "required": [
-          "none"
-        ]
-      },
-      "strict_min_version": "58.0"
+      "strict_min_version": "140.0",
+      "data_collection_permissions": { "required": ["none"] }
     }
-  }, 
-  "icons": {"16": "icon.png", "48": "icon.png", "128": "icon.png"},
+  },
+  "icons": { "16": "icons/icon-16.png", "32": "icons/icon-32.png", "48": "icons/icon-48.png", "96": "icons/icon-96.png", "128": "icons/icon-128.png" },
   "content_scripts": [
-    {
-      "matches": ["https://*.netkeiba.com/db/race/*"],
-      "js": ["content.js"]
-    },
-    {
-      "matches": ["https://jra.jp/*"],
-      "js": ["jra_player.js"],
-      "run_at": "document_start"
-    },
-    {
-      "matches": ["*://*.stream.ne.jp/*"],
-      "js": ["iframe_monitor.js"],
-      "all_frames": true
-    }
+    { "matches": ["https://en.netkeiba.com/db/race/*"], "js": ["lib/hls.light.min.js", "content.js"] },
+    { "matches": ["https://en.netkeiba.com/*"], "js": ["links.js"] }
   ]
 }
