@@ -46,10 +46,6 @@ The extension is now installed and will automatically activate on Netkeiba race 
 This extension only works on the **English version of Netkeiba**.  
 While every graded race should be available to watch with this extension either directly on the page or by being redirected to YouTube, many older races have no JRA replay at all. **This is because `jra.jp` did not begin comprehensively archiving weekend race replays until March 28, 2015.** For those races, the extension tells you no JRA replay was found and offers the YouTube search instead.  
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 2beab6fee145ce1be8619f85e34bf41000fae303
 ## Third-Party Code
 
 `lib/hls.light.min.js` is an unmodified copy of [hls.js](https://github.com/video-dev/hls.js) v1.7.3 (Apache-2.0, see `lib/hls.js-LICENSE.txt`). Firefox cannot play HLS streams natively, so hls.js feeds them to the `<video>` element.  
