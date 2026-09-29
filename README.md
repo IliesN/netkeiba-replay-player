@@ -37,6 +37,7 @@ This extension is pending Add-on Store approval, so in the meantime, you can loa
 4. Click the **Load Temporary Add-on...** button.
 5. Navigate into your extracted folder and select the `manifest.json` file.  
 
+> **Note:** Firefox removes temporary add-ons when it closes, so you'll need to repeat these steps each time you restart it. This won't be necessary once the extension is available on the Firefox Add-ons store.
 
 The extension is now installed and will automatically activate on Netkeiba race result pages (hopefully!)
 
@@ -45,9 +46,6 @@ The extension is now installed and will automatically activate on Netkeiba race 
 This extension only works on the **English version of Netkeiba**.  
 While every graded race should be available to watch with this extension either directly on the page or by being redirected to YouTube, many older races have no JRA replay at all. **This is because `jra.jp` did not begin comprehensively archiving weekend race replays until March 28, 2015.** For those races, the extension tells you no JRA replay was found and offers the YouTube search instead.  
 
-## Packaging
-
-Run `node build.mjs` to create store-ready zips in `dist/`: one for Firefox, and one for Chrome without the Firefox-only manifest key. Store listing images are in `dist/store/`.  
 
 ## Third-Party Code
 
