@@ -13,6 +13,9 @@ If JRA has no replay for a given race, the extension will instead offer a YouTub
 
 On other pages, such as a horse's profile and results, the little video icons next to each race take you straight to that race's replay.  
 
+## How to Install
+
+This extension isn't available on web stores yet, you must install it through GitHub.
 
 ## How to Install from GitHub
 
