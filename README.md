@@ -38,10 +38,6 @@ This extension is pending Add-on Store approval, so in the meantime, you can loa
 5. Navigate into your extracted folder and select the `manifest.json` file.  
 
 > **Note:** Firefox removes temporary add-ons when it closes, so you'll need to repeat these steps each time you restart it. This won't be necessary once the extension is available on the Firefox Add-ons store.
-<<<<<<< HEAD
-
-=======
->>>>>>> 2beab6fee145ce1be8619f85e34bf41000fae303
 
 The extension is now installed and will automatically activate on Netkeiba race result pages (hopefully!)
 
