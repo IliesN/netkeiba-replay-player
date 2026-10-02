@@ -14,12 +14,16 @@ If JRA has no replay for a given race, the extension will instead offer a YouTub
 On other pages, such as a horse's profile and results, the little video icons next to each race take you straight to that race's replay.  
 
 ## How to Install
-For Chrome users, this extension is available on [Chrome Web Store](https://chromewebstore.google.com/detail/replay-player-for-netkeib/cmkljjcgajgojaohmmjgpkgnecollfmd?authuser=0&hl=fr).
-For Mozilla Firefox users, this extension isn’t available on the Firefox web store yet, you must install it through GitHub.
+Download for Chrome : [Chrome Web Store](https://chromewebstore.google.com/detail/replay-player-for-netkeib/cmkljjcgajgojaohmmjgpkgnecollfmd?authuser=0&hl=fr).
+Download for Firefox : [Firefox Add-ons](https://addons.mozilla.org/en-GB/firefox/addon/replay-player-for-netkeiba/)
 
-## How to Install from GitHub
+## How to Install
 
 ### Chrome
+
+[Download from Chrome Web Store.](https://chromewebstore.google.com/detail/replay-player-for-netkeib/cmkljjcgajgojaohmmjgpkgnecollfmd?authuser=0&hl=fr)
+
+**OR** download from GitHub:
 
 1. Download the Chrome `.zip` file (`replay-player-for-netkeiba-<version>-chrome.zip`) from the [Releases section](https://github.com/IliesN/netkeiba-replay-player/releases/tag/V1.1.0).
 2. Extract the `.zip` file into a folder on your computer.
@@ -30,7 +34,9 @@ For Mozilla Firefox users, this extension isn’t available on the Firefox web s
 
 ### Mozilla Firefox
 
-This extension is pending Add-on Store approval, so in the meantime, you can load it directly into Firefox:
+[Download from Firefox Add-ons.](https://addons.mozilla.org/en-GB/firefox/addon/replay-player-for-netkeiba/)
+
+**OR** download from GitHub:
 
 1. Download and extract the Firefox `.zip` file (`replay-player-for-netkeiba-<version>-firefox.zip`) from the [Releases section](https://github.com/IliesN/netkeiba-replay-player/releases/tag/V1.1.0) to a folder on your computer.
 2. Open Firefox and type `about:debugging` in the address bar, then press **Enter**.
@@ -38,7 +44,7 @@ This extension is pending Add-on Store approval, so in the meantime, you can loa
 4. Click the **Load Temporary Add-on...** button.
 5. Navigate into your extracted folder and select the `manifest.json` file.  
 
-> **Note:** Firefox removes temporary add-ons when it closes, so you'll need to repeat these steps each time you restart it. This won't be necessary once the extension is available on the Firefox Add-ons store.
+> **Note:** Firefox removes temporary add-ons when it closes, so you'll need to repeat these steps each time you restart it. Getting the extension from Firefox Add-ons would be more convenient.
 
 The extension is now installed and will automatically activate on Netkeiba race result pages (hopefully!)
 
