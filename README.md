@@ -14,16 +14,14 @@ If JRA has no replay for a given race, the extension will instead offer a YouTub
 On other pages, such as a horse's profile and results, the little video icons next to each race take you straight to that race's replay.  
 
 ## How to Install
-
-This extension isn't available on web stores yet, you must install it through GitHub.
+For Chrome users, this extension is available on [Chrome Web Store](https://chromewebstore.google.com/detail/replay-player-for-netkeib/cmkljjcgajgojaohmmjgpkgnecollfmd?authuser=0&hl=fr).
+For Mozilla Firefox users, this extension isn’t available on the Firefox web store yet, you must install it through GitHub.
 
 ## How to Install from GitHub
 
 ### Chrome
 
-This extension is pending Web Store approval, so in the meantime, you can load it directly into Chrome:
-
-1. Download the Chrome `.zip` file (`replay-player-for-netkeiba-<version>-chrome.zip`) from the Releases section.
+1. Download the Chrome `.zip` file (`replay-player-for-netkeiba-<version>-chrome.zip`) from the [Releases section](https://github.com/IliesN/netkeiba-replay-player/releases/tag/V1.1.0).
 2. Extract the `.zip` file into a folder on your computer.
 3. Open Chrome and navigate to `chrome://extensions/` (or go to Menu > Extensions > Manage Extensions).
 4. Turn on **Developer mode** using the toggle switch in the top right corner.
@@ -34,7 +32,7 @@ This extension is pending Web Store approval, so in the meantime, you can load i
 
 This extension is pending Add-on Store approval, so in the meantime, you can load it directly into Firefox:
 
-1. Download and extract the Firefox `.zip` file (`replay-player-for-netkeiba-<version>-firefox.zip`) to a folder on your computer.
+1. Download and extract the Firefox `.zip` file (`replay-player-for-netkeiba-<version>-firefox.zip`) from the [Releases section](https://github.com/IliesN/netkeiba-replay-player/releases/tag/V1.1.0) to a folder on your computer.
 2. Open Firefox and type `about:debugging` in the address bar, then press **Enter**.
 3. Select **This Firefox** from the left-hand sidebar.
 4. Click the **Load Temporary Add-on...** button.
