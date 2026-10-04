@@ -13,14 +13,19 @@ If JRA has no replay for a given race, the extension will instead offer a YouTub
 
 On other pages, such as a horse's profile and results, the little video icons next to each race take you straight to that race's replay.  
 
+## How to Install
+Download for Chrome : [Chrome Web Store](https://chromewebstore.google.com/detail/replay-player-for-netkeib/cmkljjcgajgojaohmmjgpkgnecollfmd?authuser=0&hl=fr)  
+Download for Firefox : [Firefox Add-ons](https://addons.mozilla.org/en-GB/firefox/addon/replay-player-for-netkeiba/)
 
-## How to Install from GitHub
+## How to Install
 
 ### Chrome
 
-This extension is pending Web Store approval, so in the meantime, you can load it directly into Chrome:
+[Download from Chrome Web Store.](https://chromewebstore.google.com/detail/replay-player-for-netkeib/cmkljjcgajgojaohmmjgpkgnecollfmd?authuser=0&hl=fr)
 
-1. Download the Chrome `.zip` file (`replay-player-for-netkeiba-<version>-chrome.zip`) from the Releases section.
+**OR** download from GitHub:
+
+1. Download the Chrome `.zip` file (`replay-player-for-netkeiba-<version>-chrome.zip`) from the [Releases section](https://github.com/IliesN/netkeiba-replay-player/releases/tag/V1.1.0).
 2. Extract the `.zip` file into a folder on your computer.
 3. Open Chrome and navigate to `chrome://extensions/` (or go to Menu > Extensions > Manage Extensions).
 4. Turn on **Developer mode** using the toggle switch in the top right corner.
@@ -29,19 +34,17 @@ This extension is pending Web Store approval, so in the meantime, you can load i
 
 ### Mozilla Firefox
 
-This extension is pending Add-on Store approval, so in the meantime, you can load it directly into Firefox:
+[Download from Firefox Add-ons.](https://addons.mozilla.org/en-GB/firefox/addon/replay-player-for-netkeiba/)
 
-1. Download and extract the Firefox `.zip` file (`replay-player-for-netkeiba-<version>-firefox.zip`) to a folder on your computer.
+**OR** download from GitHub:
+
+1. Download and extract the Firefox `.zip` file (`replay-player-for-netkeiba-<version>-firefox.zip`) from the [Releases section](https://github.com/IliesN/netkeiba-replay-player/releases/tag/V1.1.0) to a folder on your computer.
 2. Open Firefox and type `about:debugging` in the address bar, then press **Enter**.
 3. Select **This Firefox** from the left-hand sidebar.
 4. Click the **Load Temporary Add-on...** button.
 5. Navigate into your extracted folder and select the `manifest.json` file.  
 
-> **Note:** Firefox removes temporary add-ons when it closes, so you'll need to repeat these steps each time you restart it. This won't be necessary once the extension is available on the Firefox Add-ons store.
-<<<<<<< HEAD
-
-=======
->>>>>>> 2beab6fee145ce1be8619f85e34bf41000fae303
+> **Note:** Firefox removes temporary add-ons when it closes, so you'll need to repeat these steps each time you restart it. Getting the extension from Firefox Add-ons would be more convenient.
 
 The extension is now installed and will automatically activate on Netkeiba race result pages (hopefully!)
 
@@ -50,10 +53,6 @@ The extension is now installed and will automatically activate on Netkeiba race 
 This extension only works on the **English version of Netkeiba**.  
 While every graded race should be available to watch with this extension either directly on the page or by being redirected to YouTube, many older races have no JRA replay at all. **This is because `jra.jp` did not begin comprehensively archiving weekend race replays until March 28, 2015.** For those races, the extension tells you no JRA replay was found and offers the YouTube search instead.  
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 2beab6fee145ce1be8619f85e34bf41000fae303
 ## Third-Party Code
 
 `lib/hls.light.min.js` is an unmodified copy of [hls.js](https://github.com/video-dev/hls.js) v1.7.3 (Apache-2.0, see `lib/hls.js-LICENSE.txt`). Firefox cannot play HLS streams natively, so hls.js feeds them to the `<video>` element.  
