@@ -1,9 +1,9 @@
 // Plays JRA replays inline on Netkeiba race pages.
 // JRA's player only runs on jra.jp, but its HLS streams are public: we fetch and play them directly.
-(() => {
-    const container = document.querySelector('.VideoSampleThum');
-    const idMatch = location.pathname.match(/\/db\/race\/(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)/);
-    if (!container || !idMatch) return;
+(async () => {
+    // Race ID from /db/race/<id>/ or race_result.html?race_id=<id>
+    const idMatch = (location.pathname + location.search).match(/(?:\/db\/race\/|race_id=)(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)/);
+    if (!idMatch) return;
 
     // Netkeiba ID: year+course+meeting+day+race; JRA swaps course and meeting
     const [, year, course, meeting, day, race] = idMatch;
@@ -34,6 +34,15 @@
     const replayUrl = Promise.all(lookups.map((p) => p.catch(() => null))).then((urls) => urls.find(Boolean));
 
     // --- UI ---
+    // race_result.html injects its replay box a few seconds after load, so wait for it (give up after 20s)
+    const container = document.querySelector('.VideoSampleThum') || await new Promise((resolve) => {
+        const observer = new MutationObserver(() => {
+            const box = document.querySelector('.VideoSampleThum');
+            if (box) { observer.disconnect(); resolve(box); }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+        setTimeout(() => observer.disconnect(), 20000);
+    });
     const make = (tag, css) => { const el = document.createElement(tag); el.style.cssText = css; return el; };
     const thumb = container.querySelector('img')?.src || '';
     const player = make('div', 'position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:8px;border:1px solid #333;background:#000 center/cover');
@@ -53,7 +62,7 @@
     };
 
     const showYoutube = (message) => {
-        const name = document.querySelector('.RaceName_main')?.innerText.trim() || '';
+        const name = document.querySelector('.RaceName_main, .Race_Name')?.innerText.trim() || '';
         const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${year} ${name} JRA`)}`;
         setButton('🔍 Search on YouTube', '#f00', () => window.open(url, '_blank', 'noopener'));
         caption.textContent = message;

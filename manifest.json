@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Replay Player for Netkeiba",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Embeds JRA replays directly on Netkeiba.",
   "browser_specific_settings": {
     "gecko": {
@@ -12,7 +12,7 @@
   },
   "icons": { "16": "icons/icon-16.png", "32": "icons/icon-32.png", "48": "icons/icon-48.png", "96": "icons/icon-96.png", "128": "icons/icon-128.png" },
   "content_scripts": [
-    { "matches": ["https://en.netkeiba.com/db/race/*"], "js": ["lib/hls.light.min.js", "content.js"] },
+    { "matches": ["https://en.netkeiba.com/db/race/*", "https://en.netkeiba.com/race/race_result.html*"], "js": ["lib/hls.light.min.js", "content.js"] },
     { "matches": ["https://en.netkeiba.com/*"], "js": ["links.js"] }
   ]
 }
