@@ -5,7 +5,7 @@
     const PAGE_TYPES = [
         { url: /en\.netkeiba\.com\/db\/race\//, box: '.VideoSampleThum', name: '.RaceName_main', thumb: 'img', lang: 'en' },
         { url: /en\.netkeiba\.com\/race\/race_result\.html/, box: '.VideoSampleThum', name: '.Race_Name', thumb: 'img', lang: 'en' },
-        { url: /race\.netkeiba\.com\/race\/movie\.html/, box: '.PremiumRegistWrap', name: '.RaceName', thumb: null, lang: 'ja' },
+        { url: /race\.netkeiba\.com\/race\/movie[^/]*\.html/, box: '.PremiumRegistWrap', name: '.RaceName', thumb: null, lang: 'ja' },
     ];
     const LABELS = {
         en: { looking: 'Looking for the replay…', play: '▶ Play Replay', youtube: '🔍 Search on YouTube',
