@@ -1,11 +1,11 @@
 // Plays JRA replays inline on Netkeiba race pages (English and Japanese sites).
 // JRA's player only runs on jra.jp, but its HLS streams are public: we fetch and play them directly.
 (async () => {
-    // Supported pages: where the replay area, race name and thumbnail are, and which language to use
+    // Supported pages: where the replay area, race name and thumbnail are
     const PAGE_TYPES = [
-        { url: /en\.netkeiba\.com\/db\/race\//, box: '.VideoSampleThum', name: '.RaceName_main', thumb: 'img', lang: 'en' },
-        { url: /en\.netkeiba\.com\/race\/race_result\.html/, box: '.VideoSampleThum', name: '.Race_Name', thumb: 'img', lang: 'en' },
-        { url: /race\.netkeiba\.com\/race\/movie[^/]*\.html/, box: '.PremiumRegistWrap', name: '.RaceName', thumb: null, lang: 'ja' },
+        { url: /en\.netkeiba\.com\/db\/race\//, box: '.VideoSampleThum', name: '.RaceName_main', thumb: 'img' },
+        { url: /en\.netkeiba\.com\/race\/race_result\.html/, box: '.VideoSampleThum', name: '.Race_Name', thumb: 'img' },
+        { url: /race\.netkeiba\.com\/race\/movie[^/]*\.html/, box: '.PremiumRegistWrap', name: '.RaceName', thumb: null },
     ];
     const LABELS = {
         en: { looking: 'Looking for the replay…', play: '▶ Play Replay', youtube: '🔍 Search on YouTube',
@@ -16,7 +16,7 @@
     const page = PAGE_TYPES.find((p) => p.url.test(location.href));
     const idMatch = location.href.match(/(?:\/db\/race\/|race_id=)(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)/);
     if (!page || !idMatch) return;
-    const label = LABELS[page.lang];
+    const label = LABELS[navigator.language.startsWith('ja') ? 'ja' : 'en']; // browser language, not the site's
 
     // Netkeiba ID: year+course+meeting+day+race; JRA swaps course and meeting
     const [, year, course, meeting, day, race] = idMatch;

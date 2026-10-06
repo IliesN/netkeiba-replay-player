@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Replay Player for Netkeiba",
-  "version": "1.3.0",
+  "version": "1.2.1",
   "description": "Embeds JRA replays directly on Netkeiba.",
   "browser_specific_settings": {
     "gecko": {
