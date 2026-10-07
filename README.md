@@ -38,7 +38,7 @@ Download for Firefox : [Firefox Add-ons](https://addons.mozilla.org/en-GB/firefo
 
 **OR** download from GitHub:
 
-1. Download and extract the Firefox `.zip` file (`replay-player-for-netkeiba-<version>-firefox.zip`) from the [Releases section](https://github.com/IliesN/netkeiba-replay-player/releases/tag/V1.1.0) to a folder on your computer.
+1. Download and extract the Firefox `.zip` file (`replay-player-for-netkeiba-<version>-firefox.zip`) from the [Releases section](https://github.com/IliesN/netkeiba-replay-player/releases/) to a folder on your computer.
 2. Open Firefox and type `about:debugging` in the address bar, then press **Enter**.
 3. Select **This Firefox** from the left-hand sidebar.
 4. Click the **Load Temporary Add-on...** button.
@@ -50,7 +50,7 @@ The extension is now installed and will automatically activate on Netkeiba race 
 
 ## Disclaimers
 
-This extension only works on the **English version of Netkeiba**.  
+This extension works on the **English version of Netkeiba** (race pages and race result pages) and on the **Japanese version's race video pages** (`race.netkeiba.com/race/movie.html`), where the player appears in Japanese.  
 While every graded race should be available to watch with this extension either directly on the page or by being redirected to YouTube, many older races have no JRA replay at all. **This is because `jra.jp` did not begin comprehensively archiving weekend race replays until March 28, 2015.** For those races, the extension tells you no JRA replay was found and offers the YouTube search instead.  
 
 ## Third-Party Code
