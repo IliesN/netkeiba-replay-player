@@ -25,7 +25,7 @@ Download for Firefox : [Firefox Add-ons](https://addons.mozilla.org/en-GB/firefo
 
 **OR** download from GitHub:
 
-1. Download the Chrome `.zip` file (`replay-player-for-netkeiba-<version>-chrome.zip`) from the [Releases section](https://github.com/IliesN/netkeiba-replay-player/releases/tag/V1.1.0).
+1. Download the Chrome `.zip` file (`replay-player-for-netkeiba-<version>-chrome.zip`) from the [Releases section](https://github.com/IliesN/netkeiba-replay-player/releases/).
 2. Extract the `.zip` file into a folder on your computer.
 3. Open Chrome and navigate to `chrome://extensions/` (or go to Menu > Extensions > Manage Extensions).
 4. Turn on **Developer mode** using the toggle switch in the top right corner.
