@@ -14,10 +14,6 @@ If JRA has no replay for a given race, the extension will instead offer a YouTub
 On other pages, such as a horse's profile and results, the little video icons next to each race take you straight to that race's replay.  
 
 ## How to Install
-Download for Chrome : [Chrome Web Store](https://chromewebstore.google.com/detail/replay-player-for-netkeib/cmkljjcgajgojaohmmjgpkgnecollfmd?authuser=0&hl=fr)  
-Download for Firefox : [Firefox Add-ons](https://addons.mozilla.org/en-GB/firefox/addon/replay-player-for-netkeiba/)
-
-## How to Install
 
 ### Chrome
 
