@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "Replay Player for Netkeiba",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Embeds JRA replays directly on Netkeiba.",
+    "description": "Short description shown in the browser and the stores"
+  }
+}

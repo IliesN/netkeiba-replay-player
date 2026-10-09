@@ -6,11 +6,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
-const FILES = ['manifest.json', 'content.js', 'links.js', 'lib', 'icons']; // everything the extension ships
+const FILES = ['manifest.json', 'content.js', 'links.js', 'lib', 'icons', '_locales']; // everything the extension ships
 const TAR = path.join(process.env.SystemRoot || 'C:\\Windows', 'System32', 'tar.exe'); // Windows' bsdtar writes clean zips
 
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json'), 'utf8'));
-const base = `${manifest.name.toLowerCase().replace(/\W+/g, '-')}-${manifest.version}`;
+// The name is a "__MSG_extName__" placeholder: read the English one from _locales
+const messages = JSON.parse(fs.readFileSync(path.join(root, '_locales', 'en', 'messages.json'), 'utf8'));
+const name = manifest.name.replace(/^__MSG_(\w+)__$/, (_, key) => messages[key].message);
+const base = `${name.toLowerCase().replace(/\W+/g, '-')}-${manifest.version}`;
 const dist = path.join(root, 'dist');
 fs.mkdirSync(dist, { recursive: true });
 

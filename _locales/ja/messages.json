@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "netkeibaリプレイヤー",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "netkeibaのページにJRAのレース映像を直接埋め込みます。",
+    "description": "Short description shown in the browser and the stores"
+  }
+}
